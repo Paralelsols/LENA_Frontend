@@ -593,7 +593,7 @@ useEffect(() => {
 
   const shareText = async (text) => {
     try {
-      text = 'https://lena-frontend-9a9r.vercel.app/ifo?Referral='+text
+      text = 'https://lena-frontend-sage.vercel.app/ifo?Referral='+text
       await navigator.share({ text });
     } catch (error) {
       console.error("Error sharing text:", error);
