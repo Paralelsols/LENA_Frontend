@@ -593,7 +593,7 @@ useEffect(() => {
 
   const shareText = async (text) => {
     try {
-      text = 'http://localhost:3000/ifo?Referral='+text
+      text = 'https://lena-frontend-9a9r.vercel.app/ifo?Referral='+text
       await navigator.share({ text });
     } catch (error) {
       console.error("Error sharing text:", error);
@@ -602,7 +602,7 @@ useEffect(() => {
 
   const ReferralSubmit = async (Referral, Refree ) => {
     try {
-      const response = await fetch('http://localhost:8080/validateReferral', {
+      const response = await fetch('https://lena-backend.onrender.com/validateReferral', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
