@@ -592,12 +592,28 @@ useEffect(() => {
   }
 
   const shareText = async (text) => {
-    try {
-      text = 'https://lena-frontend-sage.vercel.app/ifo?Referral='+text
-      await navigator.share({ text });
-    } catch (error) {
-      console.error("Error sharing text:", error);
-    }
+    text = 'https://lena-frontend-sage.vercel.app/ifo?Referral='+text
+
+    navigator.clipboard.writeText(text)
+    .then(() => {
+      addToast('Text copied to clipboard!',
+      {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    })
+    .catch(err => {
+      // console.error('Failed to copy text: ', err);
+      addToast('Failed to copy text: ', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    });
+    // try {
+    //   await navigator.share({ text });
+    // } catch (error) {
+    //   console.error("Error sharing text:", error);
+    // }
   };
 
   const ReferralSubmit = async (Referral, Refree ) => {
