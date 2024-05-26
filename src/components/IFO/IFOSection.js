@@ -46,6 +46,7 @@ const IFOSection = () => {
   const { address, isConnected } = useAccount()
   const { addToast } = useToasts()
   const [responseMessage, setResponseMessage] = useState('');
+  const [refCount , setrefCount] = useState({});
 
 
   const infuraUrl = 'https://ropsten.infura.io/v3/8f99e25e35fb47be849213a3438a0c14';
@@ -615,10 +616,10 @@ useEffect(() => {
     //   console.error("Error sharing text:", error);
     // }
   };
-
+let baseurl = 'https://lena-backend.onrender.com'
   const ReferralSubmit = async (Referral, Refree ) => {
     try {
-      const response = await fetch('https://lena-backend.onrender.com/validateReferral', {
+      const response = await fetch(`${baseurl}/validateReferral`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -645,6 +646,24 @@ useEffect(() => {
       setResponseMessage('An error occurred. Please try again later.');
     }
   };
+    const count = async () => {
+    try {
+      const response = await fetch(`${baseurl}/getcount`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({address}),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData)
+      setrefCount(responseData)
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
   const handleChange = (e) => {
@@ -666,6 +685,10 @@ useEffect(() => {
   } else {
     console.log('Referral value is invalid or not found');
   }
+  },[address , isConnected])
+
+  useEffect(()=>{
+    count()
   },[address , isConnected])
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -766,8 +789,22 @@ useEffect(() => {
           <Box className="w-full text-center text-white">
             {isConnected ?
             <>
+             <Typography className="text-white text-sm poppins">
             <h2>Address:</h2>
+             </Typography>
             <h2>{address}</h2>
+            <div className="flex items-center justify-center w-full">
+              <div className="items-center  w-full">
+              <Typography className="text-white text-sm poppins">
+                 Referrals : {refCount != {} ? refCount.count : 0}
+                </Typography>
+              </div>
+              <div className="items-center  w-full">
+              <Typography className="text-white text-sm poppins">
+                Points : {refCount != {} ? refCount.totalPoints : 0}
+                </Typography>
+              </div>
+            </div>
             </>:
              <h2>Connect Your Wallet</h2>
             }
