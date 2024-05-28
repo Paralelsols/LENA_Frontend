@@ -47,7 +47,7 @@ const IFOSection = () => {
   const { addToast } = useToasts()
   const [responseMessage, setResponseMessage] = useState('');
   const [refCount , setrefCount] = useState({});
-
+  const [rewardCount, setRewardCount] = useState({});
 
   const infuraUrl = 'https://ropsten.infura.io/v3/8f99e25e35fb47be849213a3438a0c14';
   const infuraMainnet = 'https://mainnet.infura.io/v3/8f99e25e35fb47be849213a3438a0c14'
@@ -664,6 +664,46 @@ let baseurl = 'https://lena-backend.onrender.com'
       console.error('Error:', error);
     }
   };
+  const getRewardCount = async () => {
+
+    try {
+      const response = await fetch(`${baseurl}/getreward`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({address}),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData)
+      setRewardCount(responseData)
+      
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const dailyReward = async () => {
+    try {
+      const response = await fetch(`${baseurl}/dailyreward`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({address}),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData)
+      getRewardCount()
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+ 
+
 
 
   const handleChange = (e) => {
@@ -675,6 +715,24 @@ let baseurl = 'https://lena-backend.onrender.com'
     const { value } = e.target;
     setcommentValue(value)
   };
+
+
+  useEffect(()=>{
+    if(isConnected){
+      console.log("Wallet Connect with yhtis address ===>" , address)
+    }else{
+      console.log("Wallet Disconnect with yhtis address ===>" , address)
+    }
+    const lastShown = localStorage.getItem(address);
+    const currentTime = new Date().getTime();
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    if (!lastShown || currentTime - lastShown > oneDayInMilliseconds) {
+      localStorage.setItem(address, currentTime);
+      dailyReward();
+    } 
+  },[address, isConnected])
+
 
   useEffect(()=>{
   const referral = getReferralFromURL();
@@ -689,6 +747,7 @@ let baseurl = 'https://lena-backend.onrender.com'
 
   useEffect(()=>{
     count()
+    getRewardCount()
   },[address , isConnected])
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -801,7 +860,7 @@ let baseurl = 'https://lena-backend.onrender.com'
               </div>
               <div className="items-center  w-full">
               <Typography className="text-white text-sm poppins">
-                Points : {refCount != {} ? refCount.totalPoints : 0}
+                Points : {refCount != {} ? refCount.totalPoints + rewardCount?.dailyPoints: 0}
                 </Typography>
               </div>
             </div>

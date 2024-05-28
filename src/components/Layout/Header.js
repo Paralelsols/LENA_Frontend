@@ -9,6 +9,7 @@ import { useAccount , useConnect , useDisconnect  } from "wagmi";
 
 const Header = () => {
   const [active, setActive] = useState(0);
+  const [rewardCount, setRewardCount] = useState();
   const { pathname } = useLocation();
   const { open } = useWeb3Modal()
 
@@ -17,10 +18,22 @@ const Header = () => {
     connector: new InjectedConnector(),
   })
   const { disconnect } = useDisconnect()
+  
+
+
+
 
   useEffect(()=>{
     if(isConnected){
       console.log("Wallet Connect with yhtis address ===>" , address)
+      const lastShown = localStorage.getItem('welcomeLastShown');
+      const currentTime = new Date().getTime();
+      const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+
+      if (!lastShown || currentTime - lastShown > oneDayInMilliseconds) {
+        // dailyReward();
+        localStorage.setItem('welcomeLastShown', currentTime);
+      } 
     }else{
       console.log("Wallet Disconnect with yhtis address ===>" , address)
     }
@@ -81,7 +94,7 @@ const Header = () => {
           {/* <Button className="bg-[#47a1ff] text-white rounded-full py-2 px-4 capitalize poppins ">
             Connect Wallet
           </Button> */}
-                  <w3m-button />
+              <w3m-button />
         </Box>
       </Box>
     </Box>
