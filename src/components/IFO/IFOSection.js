@@ -12,6 +12,7 @@ import axios from "axios";
 import qs from "querystring"
 import OAuth from "oauth-1.0a";
 import BigNumber from 'bignumber.js';
+import copy from '../../assets/icons8-copy-50.png'
 
 
 export const BalanceComponent = ({ address }) => {
@@ -808,9 +809,18 @@ let baseurl = 'https://lena-backend.onrender.com'
             </Box>
           </Box>
           <Box className="h-fit w-full flex flex-col gap-y-4 lg:gap-y-0 lg:flex-row justify-between items-center my-5 px-5">
-            <Button target="_blank" href="https://twitter.com/intent/tweet?text=Lena%20is%20the%20best%20coin%20in%20the%20world" className="w-full lg:w-[44%] py-3 rounded-full bg-[#1e242d] text-white poppins capitalize gap-x-2 flex items-center">
-              Share on <XIcon className="text-lg" />
-            </Button>
+            
+            <Box className="button-border-gradient w-full lg:w-[44%] p-[2.5px] rounded-full h-fit cursor-pointer">
+              <a target="_blank" href="https://twitter.com/intent/tweet?text=Lena%20is%20the%20best%20coin%20in%20the%20world">
+              <Box className="h-fit p-2.5 w-full text-center bg-[#141118] rounded-full bg-opacity-95">
+                <Typography className="text-white text-sm poppins">
+                  Share on <XIcon className="text-lg" />
+                {/* <Button target="_blank" href="https://twitter.com/intent/tweet?text=Lena%20is%20the%20best%20coin%20in%20the%20world" >
+                </Button> */}
+                </Typography>
+              </Box>
+                </a>
+            </Box>
             <Box className="button-border-gradient w-full lg:w-[44%] p-[2.5px] rounded-full h-fit cursor-pointer">
               <Box className="h-fit p-2.5 w-full text-center bg-[#141118] rounded-full bg-opacity-95">
                 <Typography className="text-white text-sm poppins">
@@ -820,7 +830,7 @@ let baseurl = 'https://lena-backend.onrender.com'
             </Box>
           </Box>
           <Box className="h-fit w-full flex flex-col gap-y-4 lg:gap-y-0 lg:flex-row justify-between items-center my-5 px-5">
-            <Box className="button-border-gradient w-full lg:w-[44%] p-[2.5px] rounded-full h-fit cursor-pointer">
+            <Box className="button-border-gradient w-full lg:w-[100%] p-[2.5px] rounded-full h-fit cursor-pointer">
               <Box className="h-fit p-2.5 w-full text-center bg-[#141118] rounded-full bg-opacity-95">
                 <Typography className="text-white text-sm poppins">
                 <Button target="_blank" href="https://twitter.com/intent/retweet?tweet_id=1716423749929480613" className="text-white normal-case text-sm poppins">
@@ -829,7 +839,7 @@ let baseurl = 'https://lena-backend.onrender.com'
                 </Typography>
               </Box>
             </Box>
-            {isConnected ?
+            {/* {isConnected ?
             <Box onClick={()=>shareText(address)} className="button-border-gradient w-full lg:w-[44%] p-[2.5px] rounded-full h-fit cursor-pointer">
               <Box className="h-fit p-2.5 w-full text-center bg-[#141118] rounded-full bg-opacity-95">
                 <Typography className="text-white text-sm poppins">
@@ -843,12 +853,41 @@ let baseurl = 'https://lena-backend.onrender.com'
                   Referrals
                 </Typography>
               </Box>
-            </Box>}
+            </Box>} */}
           </Box>
           <Box className="w-full text-center text-white">
             {isConnected ?
             <>
-             <Typography className="text-white text-sm poppins">
+            <>
+            <div className="bt-1 border">
+            </div>
+            <div className="mt-4 px-10"> 
+              <h1 className=" text-2xl poppins">Earn With Referral</h1>
+              <p className="mt-3 mb-3 poppins">invite your friends and famaily to join our Community, and you'll reap the rewards - 5% of the value of their purchased contributions, paid in BNB. </p>
+              <h1 className="text-xl mb-3 poppins">Your Referral Link:</h1>
+              <div className="flex w-full gap-2">
+                <div className="w-full"> 
+                  <input className="poppins text-black w-full bg-white p-2 rounded-xl border-yellow-500 border-x-2" disabled type="text" value={`https://lena-frontend-sage.vercel.app/ifo?Referral=${address}`} />
+                </div>
+               <button onClick={()=>shareText(address)} className="bg-yellow-500 rounded-xl p-2" type="button">
+                <img src={copy} width={20} height={20} />
+               </button>
+              </div>
+              <div className="flex justify-between w-full mt-4">
+              <div className="items-left  w-full">
+              <Typography className="text-white text-lg poppins">
+                 Referrals : {refCount != {} ? refCount.count : 0}
+                </Typography>
+              </div>
+              <div className="items-center  w-full">
+              <Typography className="text-white text-lg poppins">
+                Points : {refCount != {} ? refCount.totalPoints + rewardCount?.dailyPoints: 0}
+                </Typography>
+              </div>
+            </div>
+            </div>
+            </>
+             {/* <Typography className="text-white text-sm poppins">
             <h2>Address:</h2>
              </Typography>
             <h2>{address}</h2>
@@ -863,7 +902,7 @@ let baseurl = 'https://lena-backend.onrender.com'
                 Points : {refCount != {} ? refCount.totalPoints + rewardCount?.dailyPoints: 0}
                 </Typography>
               </div>
-            </div>
+            </div> */}
             </>:
              <h2>Connect Your Wallet</h2>
             }
